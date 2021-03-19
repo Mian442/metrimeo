@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";

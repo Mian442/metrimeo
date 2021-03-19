@@ -3,21 +3,13 @@ import * as React from "react";
 import { ScrollView } from "react-native";
 import { ImageBackground } from "react-native";
 import { StyleSheet, View } from "react-native";
-import { Button, Divider, Text, Title } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Divider, Text } from "react-native-paper";
 
 export default function TabOneScreen() {
-  const [text, setText] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
   const navigation = useNavigation();
-  const User = useSelector((state) => state.User.TOKEN);
-  const dispatch = useDispatch();
-  // if (!loading) {
-  //   return <Loading />;
-  // } else
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
         <ImageBackground
           source={require("../assets/images/Modern-architecture-building.jpg")}
           style={styles.image}

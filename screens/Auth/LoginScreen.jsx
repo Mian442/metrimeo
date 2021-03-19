@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { Linking, TouchableOpacity } from "react-native";
 import { StyleSheet, View } from "react-native";
 import { Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { Button, Text, TextInput } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import SavingModel from "../../components/SavingModel";
-import { USER, USER_LOGIN } from "../../redux/actions/UserActions";
+import { USER_LOGIN } from "../../redux/actions/UserActions";
 
 const MainScreen = () => {
   const [login, setLogin] = useState({
@@ -128,7 +128,11 @@ const MainScreen = () => {
               }}
               color="#000"
               mode="text"
-              onPress={() => navigation.navigate("Forget Password")}
+              onPress={() =>
+                Linking.openURL(
+                  "https://metrimeo-react.herokuapp.com/forgetpassword"
+                )
+              }
             >
               Forgot Password ?
             </Button>

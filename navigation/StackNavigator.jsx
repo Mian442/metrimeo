@@ -1,7 +1,5 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import ForgetPasswordScreen from "../screens/Auth/ForgetPasswordScreen";
 import SignUpScreen from "../screens/Auth/SignUpScreen";
 import LoginScreen from "../screens/Auth/LoginScreen";
 
@@ -39,11 +37,6 @@ function RootNavigator() {
         name="Main"
         component={LoginScreen}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Forget Password"
-        component={ForgetPasswordScreen}
-        options={HeaderOption}
       />
       <Stack.Screen
         name="Sign Up"

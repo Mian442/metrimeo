@@ -1,15 +1,7 @@
 import React from "react";
-import { TouchableWithoutFeedback } from "react-native";
-import { Autocomplete, AutocompleteItem, Icon } from "@ui-kitten/components";
+import { Autocomplete, AutocompleteItem } from "@ui-kitten/components";
 import { View } from "react-native";
 
-const movies = [
-  { title: "Star Wars" },
-  { title: "Back to the Future" },
-  { title: "The Matrix" },
-  { title: "Inception" },
-  { title: "Interstellar" },
-];
 const countries = [
   { code: "AD", label: "Andorra", phone: "376" },
   { code: "AE", label: "United Arab Emirates", phone: "971" },

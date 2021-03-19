@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ScrollViewBase } from "react-native";
 import {
   ScrollView,
   StyleSheet,
@@ -12,7 +11,6 @@ import { Avatar, Icon, ListItem } from "react-native-elements";
 import { IconButton, Title } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { DEL_USER_TOKEN, GET_USER_IMAGE } from "../redux/actions/UserActions";
-import Loading from "./Loading";
 const Profile = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -20,34 +18,16 @@ const Profile = () => {
   const [image, setImage] = useState("");
   const list = [
     {
-      name: "Edit Account",
-      icon: "pencil",
+      name: "Contact Us",
+      icon: "information-outline",
       type: "material-community",
-      screen: "Form",
-    },
-    {
-      name: "Change password",
-      icon: "lock-closed",
-      type: "ionicon",
-      screen: "Pass",
-    },
-    {
-      name: "Delete Account",
-      icon: "delete",
-      type: "material-community",
-      screen: "Delete Account",
+      screen: "Contact Us",
     },
     {
       name: "Logout",
       icon: "logout",
       type: "antdesign",
       screen: "Setting",
-    },
-    {
-      name: "Contact Us",
-      icon: "information-outline",
-      type: "material-community",
-      screen: "Contact Us",
     },
   ];
   useEffect(() => {
@@ -60,12 +40,12 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View style={{ marginVertical: "8.5%" }}>
+        <View style={{ backgroundColor: "#3ba1da" }}>
           <IconButton
             icon="menu"
             color="#fff"
             size={38}
-            style={{}}
+            style={{ marginVertical: "8.5%" }}
             onPress={() => navigation.openDrawer()}
           />
           <Avatar
@@ -132,5 +112,5 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#3ba1da", flex: 1 },
+  container: { backgroundColor: "#fff", flex: 1 },
 });

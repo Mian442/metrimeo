@@ -7,18 +7,15 @@ import {
   TextInput,
   Title,
 } from "react-native-paper";
-import { Icon, Image } from "react-native-elements";
-import { IndexPath, Select, SelectItem } from "@ui-kitten/components";
+import { Image } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import SavingModel from "../../components/SavingModel";
 import { TouchableOpacity } from "react-native";
 import AutoCompleteTextField from "../../components/AutoCompleteTextField";
 import { KeyboardAvoidingView } from "react-native";
-import { Platform } from "react-native";
 import { USER_REGISTER } from "../../redux/actions/UserActions";
 import { Toast } from "native-base";
 import { useDispatch } from "react-redux";
-import DateTimePicker from "@react-native-community/datetimepicker";
 const ProfileForm = () => {
   const initial = {
     phone: "",
@@ -29,14 +26,10 @@ const ProfileForm = () => {
     username: "",
     password: "",
     cPassword: "",
-    date: "",
   };
 
   const [offer, setOffer] = useState(initial);
-  const [show, setShow] = useState(false);
-  const [mode, setMode] = useState("date");
   const [model, setModel] = useState(false);
-  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { params } = useRoute();
@@ -125,7 +118,6 @@ const ProfileForm = () => {
         country: offer.country,
         username: offer.username,
         fname: offer.name,
-        date: offer.date,
       };
       console.log(offer);
       setModel(true);
@@ -151,47 +143,10 @@ const ProfileForm = () => {
     }
   };
 
-  const showDatepicker = () => {
-    showMode("date");
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || dob;
-    setShow(Platform.OS === "ios");
-    setOffer({ ...offer, date: currentDate });
-  };
-
-  // if (loading) {
-  //   return <Loading />;
-  // } else
   return (
     <>
-      <KeyboardAvoidingView
-        // behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ backgroundColor: "#fff", flex: 1 }}
-      >
-        <ScrollView
-          style={{ margin: 20 }}
-          showsVerticalScrollIndicator={false}
-          // contentContainerStyle={{ flex: 1 }}
-        >
-          {show && (
-            <DateTimePicker
-              locale="es"
-              testID="dateTimePicker"
-              timeZoneOffsetInMinutes={0}
-              value={new Date()}
-              mode={mode}
-              is24Hour={true}
-              display="calendar"
-              onChange={onChange}
-              maximumDate={new Date()}
-            />
-          )}
+      <KeyboardAvoidingView style={{ backgroundColor: "#fff", flex: 1 }}>
+        <ScrollView style={{ margin: 20 }} showsVerticalScrollIndicator={false}>
           <View style={{ display: "flex", alignItems: "center" }}>
             <Image
               source={require("../../assets/images/metrimeo.png")}
@@ -258,44 +213,6 @@ const ProfileForm = () => {
             (item, i) =>
               item.show && (
                 <View key={i} style={{ marginVertical: 7 }}>
-                  {item.label === "Email Address" && (
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        marginBottom: 7,
-                        marginHorizontal: 10,
-                      }}
-                    >
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                        }}
-                        onPress={showDatepicker}
-                      >
-                        <Icon
-                          name="calendar-alt"
-                          type="font-awesome-5"
-                          color="#186eb8"
-                          style={{ fontSize: 20 }}
-                        />
-                        <Text style={{ fontSize: 18, marginLeft: 5 }}>
-                          {offer.type === "Individual"
-                            ? "Birth "
-                            : "Business Creation"}
-                          Date
-                        </Text>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            fontSize: 18,
-                            color: "#186eb8",
-                          }}
-                        >
-                          {offer.date.toString().substr(4, 12)}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
                   <TextInput
                     label={item.label}
                     placeholder={item.name}

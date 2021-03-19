@@ -23,7 +23,7 @@ const SavingModel = ({ visible, title }) => {
       >
         <ActivityIndicator
           animating={true}
-          color="#1de9b6"
+          color="#186eb8"
           size={50}
           style={{ marginRight: 10 }}
         />

@@ -2,18 +2,12 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import {
   Title,
-  Caption,
-  Paragraph,
   Drawer,
   Text,
   TouchableRipple,
-  Switch,
   Divider,
 } from "react-native-paper";
-import {
-  DrawerContentScrollView,
-  useIsDrawerOpen,
-} from "@react-navigation/drawer";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Icon } from "react-native-elements";
 import { GET_USER_IMAGE, DEL_USER_TOKEN } from "../redux/actions/UserActions";

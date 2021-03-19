@@ -10,7 +10,6 @@ import {
   RadioButton,
   Subheading,
   TextInput,
-  Title,
 } from "react-native-paper";
 import * as DocumentPicker from "expo-document-picker";
 import { Image } from "react-native-elements";
@@ -336,7 +335,6 @@ const CareersScreen = () => {
             labelStyle={{ color: "white" }}
             mode="contained"
             onPress={() => {
-              // setType();
               DocPicker("resume");
             }}
           >
@@ -354,7 +352,6 @@ const CareersScreen = () => {
             labelStyle={{ color: "white" }}
             mode="contained"
             onPress={() => {
-              // setType("letter");
               DocPicker("letter");
             }}
           >

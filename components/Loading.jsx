@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
 const Loading = () => {
@@ -13,7 +13,7 @@ const Loading = () => {
     >
       <ActivityIndicator
         animating={true}
-        color="#1de9b6"
+        color="#186eb8"
         size={50}
         style={{}}
       />
