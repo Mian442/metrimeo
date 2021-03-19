@@ -1,32 +1,42 @@
 {
   "expo": {
-    "name": "freefind",
-    "slug": "freefind",
-    "version": "1.0.0",
+    "name": "MetriMeo",
+    "slug": "metrimeo",
+    "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 30000,
+      "enabled": true
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mian442.metrimeo",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.mian442.metrimeo",
+      "useNextNotificationsApi": true,
+      "versionCode": 1,
+      "permissions": ["READ_EXTERNAL_STORAGE", "MEDIA_LIBRARY"]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/favicon.png"
+    },
+    "notification": {
+      "icon": "./assets/images/icon.png"
     }
   }
 }
