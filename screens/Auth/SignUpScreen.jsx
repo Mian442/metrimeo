@@ -1,21 +1,15 @@
 import React, { createRef, useState } from "react";
 import { ScrollView, View } from "react-native";
-import {
-  Button,
-  RadioButton,
-  Text,
-  TextInput,
-  Title,
-} from "react-native-paper";
-import { Image } from "react-native-elements";
+import { Button, Text, TextInput, Title } from "react-native-paper";
+import { CheckBox, Image } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import SavingModel from "../../components/SavingModel";
-import { TouchableOpacity } from "react-native";
 import AutoCompleteTextField from "../../components/AutoCompleteTextField";
 import { KeyboardAvoidingView } from "react-native";
 import { USER_REGISTER } from "../../redux/actions/UserActions";
 import { Toast } from "native-base";
 import { useDispatch } from "react-redux";
+import { TouchableOpacity } from "react-native";
 const ProfileForm = () => {
   const initial = {
     phone: "",
@@ -176,39 +170,38 @@ const ProfileForm = () => {
             <Text style={{ color: "#5d7280" }}>Already signed up? </Text>Log In
           </Button>
           <Title>Customer Type</Title>
-          <TouchableOpacity
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
+          <CheckBox
+            title="Individual"
+            checkedIcon="radio-button-on"
+            uncheckedIcon="radio-button-off"
+            iconType="material"
+            checked={offer.type === "Individual" ? true : false}
+            containerStyle={{
+              backgroundColor: "#fff",
+              borderColor: "#fff",
+              marginHorizontal: 0,
+              padding: 0,
+              marginVertical: 7,
             }}
+            textStyle={{ fontWeight: "normal", color: "black" }}
             onPress={() => setOffer({ ...offer, type: "Individual" })}
-          >
-            <RadioButton
-              color="#3ba1da"
-              value="Individual"
-              status={offer.type === "Individual" ? "checked" : "unchecked"}
-              onPress={() => setOffer({ ...offer, type: "Individual" })}
-            />
-            <Text>Individual</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
+          />
+          <CheckBox
+            title="Business"
+            checkedIcon="radio-button-on"
+            uncheckedIcon="radio-button-off"
+            iconType="material"
+            checked={offer.type === "Business" ? true : false}
+            containerStyle={{
+              backgroundColor: "#fff",
+              borderColor: "#fff",
+              marginHorizontal: 0,
+              padding: 0,
+              marginVertical: 7,
             }}
+            textStyle={{ fontWeight: "normal", color: "black" }}
             onPress={() => setOffer({ ...offer, type: "Business" })}
-          >
-            <RadioButton
-              color="#3ba1da"
-              value="Business"
-              status={offer.type === "Business" ? "checked" : "unchecked"}
-              onPress={() => setOffer({ ...offer, type: "Business" })}
-            />
-            <Text>Business</Text>
-          </TouchableOpacity>
-
+          />
           {list.map(
             (item, i) =>
               item.show && (
@@ -238,6 +231,7 @@ const ProfileForm = () => {
                 </View>
               )
           )}
+
           <Button
             uppercase={false}
             labelStyle={{ color: "white" }}
@@ -248,6 +242,44 @@ const ProfileForm = () => {
           >
             Sign Up
           </Button>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Text style={{ opacity: 0.54 }}>By continuing you accept our</Text>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  "https://metrimeo-react.herokuapp.com/terms-and-conditions"
+                )
+              }
+            >
+              <Text
+                style={{ color: "#2196f3", textDecorationLine: "underline" }}
+              >
+                Terms & Conditions
+              </Text>
+            </TouchableOpacity>
+            <Text style={{ opacity: 0.54 }}> and </Text>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  "https://metrimeo-react.herokuapp.com/privacy-policy"
+                )
+              }
+            >
+              <Text
+                style={{ color: "#2196f3", textDecorationLine: "underline" }}
+              >
+                Privacy Policy{" "}
+              </Text>
+            </TouchableOpacity>
+            <Text style={{ opacity: 0.54 }}>2021.</Text>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
       <SavingModel visible={model} title="Saving..." />

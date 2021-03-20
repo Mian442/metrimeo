@@ -1,24 +1,24 @@
 import { IndexPath, Select, SelectItem } from "@ui-kitten/components";
 import React, { createRef, useState } from "react";
-import { TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
+  Text,
   Button,
-  Checkbox,
   Paragraph,
-  RadioButton,
   Subheading,
   TextInput,
 } from "react-native-paper";
 import * as DocumentPicker from "expo-document-picker";
-import { Image } from "react-native-elements";
+import { CheckBox, Image } from "react-native-elements";
 import * as FileSystem from "expo-file-system";
 import SavingModel from "../components/SavingModel";
 import { useDispatch } from "react-redux";
 import { CAREER } from "../redux/actions/UserActions";
 import * as yup from "yup";
 import { Toast } from "native-base";
+import { TouchableOpacity } from "react-native";
+import { Linking } from "react-native";
 const CareersScreen = () => {
   const initial = {
     fname: "",
@@ -42,12 +42,13 @@ const CareersScreen = () => {
     resume: "",
     letter: "",
     policy: false,
+    experience: "",
   };
   let schema = yup.object().shape({
-    fname: yup.string().required(),
-    lname: yup.string().required(),
+    fname: yup.string().required("First name is required!"),
+    lname: yup.string().required("Last name is required!"),
     email: yup.string().email().required(),
-    phone: yup.number().required(),
+    phone: yup.number().min(5).required(),
     country: yup.string().required(),
     city: yup.string().required(),
     allowedToWork: yup.string().required(),
@@ -103,8 +104,8 @@ const CareersScreen = () => {
   ];
   const list = [
     {
-      name: "First Name",
-      label: "First Name",
+      name: "First Name *",
+      label: "First Name *",
       value: career.fname,
       ref: createRef(),
       blur: false,
@@ -113,8 +114,8 @@ const CareersScreen = () => {
       nextIndex: 1,
     },
     {
-      name: "Last Name",
-      label: "Last Name",
+      name: "Last Name *",
+      label: "Last Name *",
       value: career.lname,
       ref: createRef(),
       blur: false,
@@ -123,8 +124,8 @@ const CareersScreen = () => {
       nextIndex: 2,
     },
     {
-      name: "Email Address",
-      label: "Email Address",
+      name: "Email Address *",
+      label: "Email Address *",
       value: career.email,
       ref: createRef(),
       blur: false,
@@ -133,9 +134,9 @@ const CareersScreen = () => {
       nextIndex: 3,
     },
     {
-      name: "Phone Number",
+      name: "Phone Number *",
       value: career.phone,
-      label: "Phone Number",
+      label: "Phone Number *",
       ref: createRef(),
       blur: false,
       submitType: "next",
@@ -143,9 +144,9 @@ const CareersScreen = () => {
       nextIndex: 4,
     },
     {
-      name: "Desired Location - City",
+      name: "Desired Location - City *",
       value: career.city,
-      label: "Desired Location - City",
+      label: "Desired Location - City *",
       ref: createRef(),
       blur: true,
       submitType: "done",
@@ -231,50 +232,50 @@ const CareersScreen = () => {
                 blurOnSubmit={item.blur}
                 returnKeyType={item.submitType}
                 keyboardType={
-                  item.label === "Phone Number" ? "numeric" : "default"
+                  item.label === "Phone Number *" ? "numeric" : "default"
                 }
                 secureTextEntry={item.secureTextEntry}
               />
-              {item.label === "Desired Location - City" && (
+              {item.label === "Desired Location - City *" && (
                 <>
                   <Subheading style={{ marginTop: 14 }}>
                     Are you allowed to work in your desired country?
                   </Subheading>
-                  <TouchableOpacity
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
+                  <CheckBox
+                    title="Yes"
+                    checkedIcon="radio-button-on"
+                    uncheckedIcon="radio-button-off"
+                    iconType="material"
+                    checked={career.workOn === "Yes" ? true : false}
+                    containerStyle={{
+                      backgroundColor: "#fff",
+                      borderColor: "#fff",
+                      marginHorizontal: 0,
+                      padding: 0,
+                      marginVertical: 7,
                     }}
+                    textStyle={{ fontWeight: "normal", color: "black" }}
                     onPress={() => setCareer({ ...career, workOn: "Yes" })}
-                  >
-                    <RadioButton
-                      color="#3ba1da"
-                      value="Yes"
-                      status={career.workOn === "Yes" ? "checked" : "unchecked"}
-                      onPress={() => setCareer({ ...career, workOn: "Yes" })}
-                    />
-                    <Text>Yes</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
+                  />
+                  <CheckBox
+                    title="No"
+                    checkedIcon="radio-button-on"
+                    uncheckedIcon="radio-button-off"
+                    iconType="material"
+                    checked={career.workOn === "No" ? true : false}
+                    containerStyle={{
+                      backgroundColor: "#fff",
+                      borderColor: "#fff",
+                      margin: 0,
+                      padding: 0,
+                      marginTop: 7,
                     }}
+                    textStyle={{ fontWeight: "normal", color: "black" }}
                     onPress={() => setCareer({ ...career, workOn: "No" })}
-                  >
-                    <RadioButton
-                      color="#3ba1da"
-                      value="No"
-                      status={career.workOn === "No" ? "checked" : "unchecked"}
-                      onPress={() => setCareer({ ...career, workOn: "No" })}
-                    />
-                    <Text>No</Text>
-                  </TouchableOpacity>
+                  />
                 </>
               )}
-              {item.label === "Phone Number" && (
+              {item.label === "Phone Number *" && (
                 <Select
                   selectedIndex={new IndexPath(career.country.index)}
                   onSelect={(index) =>
@@ -301,8 +302,8 @@ const CareersScreen = () => {
                 education: { text: education[index.row], index: index.row },
               })
             }
-            value={career.country.text}
-            style={{ marginTop: 21 }}
+            value={career.education.text}
+            style={{ marginTop: 14 }}
           >
             {education.map((item, i) => (
               <SelectItem title={item} key={i} />
@@ -316,14 +317,23 @@ const CareersScreen = () => {
                 interest: { text: interest[index.row], index: index.row },
               })
             }
-            value={career.country.text}
+            value={career.interest.text}
             style={{ marginTop: 21 }}
           >
             {interest.map((item, i) => (
               <SelectItem title={item} key={i} />
             ))}
           </Select>
-          <Paragraph>
+          <TextInput
+            label="Number Of Years Of Experience *"
+            placeholder="Number Of Years Of Experience *"
+            value={career.experience}
+            onChangeText={(text) => setCareer({ ...career, experience: text })}
+            mode="outlined"
+            keyboardType={"numeric"}
+            style={{ marginVertical: 7 }}
+          />
+          <Paragraph style={{ marginTop: 14 }}>
             Upload Your Resume * (.rtf, .doc, .docx, .txt, .pdf files with a 2MB
             maximum file size are supported)
           </Paragraph>
@@ -340,7 +350,7 @@ const CareersScreen = () => {
           >
             Upload Resume
           </Button>
-          <Paragraph>
+          <Paragraph style={{ marginTop: 7 }}>
             Upload Your Resume * (.rtf, .doc, .docx, .txt, .pdf files with a 2MB
             maximum file size are supported)
           </Paragraph>
@@ -357,28 +367,63 @@ const CareersScreen = () => {
           >
             Upload Your cover letter
           </Button>
-          <Paragraph>
-            You must agree to our Terms & Services and Privacy Policy to submit
-            your information
-          </Paragraph>
-          <TouchableOpacity
+          <View
             style={{
               display: "flex",
               flexDirection: "row",
-              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Text style={{ opacity: 0.54, flexShrink: 1 }}>
+              By continuing you accept our
+            </Text>
+
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  "https://metrimeo-react.herokuapp.com/terms-and-conditions"
+                )
+              }
+            >
+              <Text
+                style={{ color: "#2196f3", textDecorationLine: "underline" }}
+              >
+                Terms & Conditions
+              </Text>
+            </TouchableOpacity>
+            <Text style={{ opacity: 0.54 }}> and </Text>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  "https://metrimeo-react.herokuapp.com/privacy-policy"
+                )
+              }
+            >
+              <Text
+                style={{ color: "#2196f3", textDecorationLine: "underline" }}
+              >
+                Privacy Policy{" "}
+              </Text>
+            </TouchableOpacity>
+            <Text style={{ opacity: 0.54 }}>2021.</Text>
+          </View>
+          <CheckBox
+            title="Yes, I agree to our Terms & Conditions and Privacy Policy"
+            checked={career.policy}
+            checkedIcon="check-box"
+            uncheckedIcon="check-box-outline-blank"
+            size={26}
+            iconType="material"
+            containerStyle={{
+              backgroundColor: "#fff",
+              borderColor: "#fff",
+              margin: 0,
+              padding: 0,
               marginVertical: 7,
             }}
+            textStyle={{ fontWeight: "normal", color: "black" }}
             onPress={() => setCareer({ ...career, policy: !career.policy })}
-          >
-            <Checkbox
-              status={career.policy ? "checked" : "unchecked"}
-              color="#3ba1da"
-              onPress={() => setCareer({ ...career, policy: !career.policy })}
-            />
-            <Text style={{ flexShrink: 1 }}>
-              Yes, I agree to our Terms & Conditions and Privacy Policy
-            </Text>
-          </TouchableOpacity>
+          />
           <Button
             uppercase={false}
             style={{
@@ -394,12 +439,13 @@ const CareersScreen = () => {
                 fname: career.fname,
                 lname: career.lname,
                 email: career.email,
-                phone: career.phone,
+                phone: parseInt(career.phone === "" ? 0 : career.phone),
                 city: career.city,
                 country: career.country.text,
                 allowedToWork: career.workOn,
                 education: career.education.text,
                 interests: career.interest.text,
+                experience: parseInt(career.experience),
               };
               schema
                 .validate(data, { abortEarly: false })

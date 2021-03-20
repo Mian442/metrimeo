@@ -1,12 +1,12 @@
 import React, { createRef, useState } from "react";
-import { TouchableOpacity } from "react-native";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Button, RadioButton, TextInput, Title } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Button, TextInput, Title } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import SavingModel from "../components/SavingModel";
 import { CONTACT } from "../redux/actions/UserActions";
 import * as yup from "yup";
 import { Toast } from "native-base";
+import { CheckBox } from "react-native-elements";
 const ContactUsScreen = () => {
   const initial = {
     name: "",
@@ -20,8 +20,8 @@ const ContactUsScreen = () => {
   const [model, setModel] = useState(false);
   const list = [
     {
-      name: "Enter Name",
-      label: "Name",
+      name: "Enter Name *",
+      label: "Name *",
       value: contact.name,
       ref: createRef(),
       blur: false,
@@ -29,11 +29,11 @@ const ContactUsScreen = () => {
       change: (text) => setContact({ ...contact, name: text }),
       nextIndex: 1,
       multiline: false,
-      height: 50,
+      numberOfLines: 1,
     },
     {
-      name: "Enter Email",
-      label: "Email",
+      name: "Enter Email *",
+      label: "Email *",
       value: contact.email,
       ref: createRef(),
       blur: false,
@@ -41,11 +41,11 @@ const ContactUsScreen = () => {
       change: (text) => setContact({ ...contact, email: text }),
       nextIndex: 2,
       multiline: false,
-      height: 50,
+      numberOfLines: 1,
     },
     {
-      name: "Phone",
-      label: "Phone",
+      name: "Phone *",
+      label: "Phone *",
       value: contact.phone,
       ref: createRef(),
       blur: true,
@@ -53,11 +53,11 @@ const ContactUsScreen = () => {
       change: (text) => setContact({ ...contact, phone: text }),
       nextIndex: 3,
       multiline: true,
-      height: 50,
+      numberOfLines: 1,
     },
     {
       name: "Subject*",
-      label: "Subject",
+      label: "Subject *",
       value: contact.subject,
       ref: createRef(),
       blur: true,
@@ -65,11 +65,11 @@ const ContactUsScreen = () => {
       change: (text) => setContact({ ...contact, subject: text }),
       nextIndex: 4,
       multiline: true,
-      height: 50,
+      numberOfLines: 1,
     },
     {
-      name: "Message*",
-      label: "Message",
+      name: "Message *",
+      label: "Message *",
       value: contact.comment,
       ref: createRef(),
       blur: true,
@@ -77,16 +77,16 @@ const ContactUsScreen = () => {
       change: (text) => setContact({ ...contact, comment: text }),
       nextIndex: -1,
       multiline: true,
-      height: 180,
+      numberOfLines: 5,
     },
   ];
   let schema = yup.object().shape({
-    fname: yup.string().required(),
+    fname: yup.string().required("First name is required!"),
     email: yup.string().email().required(),
-    phone: yup.number().required(),
+    phone: yup.number().min(5).required(),
     typeAccount: yup.string().required(),
-    message: yup.string().required(),
     subject: yup.string().required(),
+    message: yup.string().required(),
   });
   const dispatch = useDispatch();
   return (
@@ -109,48 +109,45 @@ const ContactUsScreen = () => {
               blurOnSubmit={item.blur}
               returnKeyType={item.submitType}
               multiline={item.multiline}
+              keyboardType={item.label === "Phone *" ? "numeric" : "default"}
+              numberOfLines={item.numberOfLines}
             />
-            {item.label === "Phone" && (
+            {item.label === "Phone *" && (
               <>
                 <Title>Customer Type</Title>
-                <TouchableOpacity
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
+
+                <CheckBox
+                  title="Individual"
+                  checkedIcon="radio-button-on"
+                  uncheckedIcon="radio-button-off"
+                  iconType="material"
+                  checked={contact.type === "Individual" ? true : false}
+                  containerStyle={{
+                    backgroundColor: "#fff",
+                    borderColor: "#fff",
+                    marginHorizontal: 0,
+                    padding: 0,
+                    marginVertical: 7,
                   }}
+                  textStyle={{ fontWeight: "normal", color: "black" }}
                   onPress={() => setContact({ ...contact, type: "Individual" })}
-                >
-                  <RadioButton
-                    color="#3ba1da"
-                    value="Individual"
-                    status={
-                      contact.type === "Individual" ? "checked" : "unchecked"
-                    }
-                    onPress={() =>
-                      setContact({ ...contact, type: "Individual" })
-                    }
-                  />
-                  <Text>Individual</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
+                />
+                <CheckBox
+                  title="Business"
+                  checkedIcon="radio-button-on"
+                  uncheckedIcon="radio-button-off"
+                  iconType="material"
+                  checked={contact.type === "Business" ? true : false}
+                  containerStyle={{
+                    backgroundColor: "#fff",
+                    borderColor: "#fff",
+                    marginHorizontal: 0,
+                    padding: 0,
+                    marginVertical: 7,
                   }}
+                  textStyle={{ fontWeight: "normal", color: "black" }}
                   onPress={() => setContact({ ...contact, type: "Business" })}
-                >
-                  <RadioButton
-                    color="#3ba1da"
-                    value="Business"
-                    status={
-                      contact.type === "Business" ? "checked" : "unchecked"
-                    }
-                    onPress={() => setContact({ ...contact, type: "Business" })}
-                  />
-                  <Text>Business</Text>
-                </TouchableOpacity>
+                />
               </>
             )}
           </View>
@@ -165,7 +162,7 @@ const ContactUsScreen = () => {
             let data = {
               fname: contact.name,
               email: contact.email,
-              phone: contact.phone,
+              phone: contact.phone === "" ? 0 : contact.phone,
               typeAccount: contact.type,
               message: contact.comment,
               subject: contact.subject,

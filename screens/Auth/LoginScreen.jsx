@@ -148,7 +148,13 @@ const MainScreen = () => {
             }}
           >
             <Text style={{ opacity: 0.54 }}>By continuing you accept our</Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  "https://metrimeo-react.herokuapp.com/terms-and-conditions"
+                )
+              }
+            >
               <Text
                 style={{ color: "#2196f3", textDecorationLine: "underline" }}
               >
@@ -156,7 +162,13 @@ const MainScreen = () => {
               </Text>
             </TouchableOpacity>
             <Text style={{ opacity: 0.54 }}> and </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  "https://metrimeo-react.herokuapp.com/privacy-policy"
+                )
+              }
+            >
               <Text
                 style={{ color: "#2196f3", textDecorationLine: "underline" }}
               >
